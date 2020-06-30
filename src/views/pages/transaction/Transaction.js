@@ -1,96 +1,124 @@
 import React from "react";
 
 import axios from "axios";
-import ReactTable from "react-table-6";
-
-import "react-table-6/react-table.css";
 import { CSVLink } from "react-csv";
 
 import { CCard, CInput, CButton } from "@coreui/react";
 import { Link } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
+import TextField from "@material-ui/core/TextField";
+
+import lodash from "lodash";
+
+import { connect } from "react-redux";
+import {
+  getTransactions,
+  editTransaction,
+  deleteTransaction,
+} from "../../../actions/transactions";
+
 class Transaction extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: [],
       searchInput: "",
       editID: null,
+      page: 0,
+      rowsPerPage: 5,
+      columnToSort: "",
+      sortDirection: "asc",
+      editRow: {},
     };
   }
 
   async componentDidMount() {
-    const url = "https://jsonplaceholder.typicode.com/posts";
-    const response = await axios.get(url);
-    this.setState({
-      data: response.data,
-    });
+    this.props.dispatch(this.props.getTransactions());
   }
 
   handleChange = (e) => {
-    this.setState({ searchInput: e.target.value });
+    this.setState({ [e.target.id]: e.target.value });
   };
 
-  handleEdit = (id) => {
+  handleEditChange = (e) => {
+    console.log(e.target.id);
+    console.log(this.state.editRow);
     this.setState({
-      editID: id,
+      editRow: {
+        ...this.state.editRow,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleDelete = () => {};
-  render() {
-    const columns = [
-      {
-        Header: "User ID",
-        accessor: "userId",
-      },
-      {
-        Header: "ID",
-        accessor: "id",
-      },
-      {
-        Header: "Title",
-        accessor: "title",
-        style: { whiteSpace: "unset" },
-      },
-      {
-        Header: "Message",
-        accessor: "body",
-        style: { whiteSpace: "unset" },
-      },
-      {
-        Header: "Action",
-        Cell: (row) => {
-          return (
-            <div className="d-flex justify-content-center">
-              <CIcon
-                onClick={() => this.handleEdit(row.original.id)}
-                className="m-3"
-                size={"xl"}
-                name="cil-pencil"
-                style={{ display: "block" }}
-              />
-              <CIcon
-                onClick={() => this.handleDelete(row.original)}
-                className="m-3"
-                size={"xl"}
-                name="cil-trash"
-                style={{ display: "block" }}
-              />
-            </div>
-          );
-        },
-      },
-    ];
+  handleEdit = (row) => {
+    console.log(row);
+    this.setState({
+      editID: row.id,
+      editRow: row,
+    });
+  };
 
+  handleDelete = (id) => {
+    this.props.dispatch(this.props.deleteTransaction(id));
+  };
+  handleChangePage = (event, newPage) => {
+    this.setState({
+      page: newPage,
+    });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      rowsPerPage: event.target.value,
+      page: 0,
+    });
+  };
+
+  invertDirection = {
+    asc: "desc",
+    desc: "asc",
+  };
+
+  handleSort = (columnName) => {
+    this.setState({
+      columnToSort: columnName,
+      sortDirection:
+        this.state.columnToSort === columnName
+          ? this.invertDirection[this.state.sortDirection]
+          : "asc",
+    });
+  };
+
+  handleCancelEdit = () => {
+    this.setState({
+      editID: null,
+    });
+  };
+
+  handleSaveEdit = () => {
+    const { editRow } = this.state;
+    this.props.dispatch(this.props.editTransaction(this.state.editID, editRow));
+    this.setState({
+      editID: null,
+    });
+  };
+  render() {
     const headers = [
       { label: "UserID", key: "userId" },
       { label: "ID", key: "id" },
       { label: "Title", key: "title" },
       { label: "Message", key: "body" },
     ];
-    const { searchInput, data } = this.state;
+    const { data } = this.props;
+    const { searchInput } = this.state;
     let filteredData = data.filter((value) => {
       return (
         value.userId
@@ -102,6 +130,17 @@ class Transaction extends React.Component {
         value.body.toLowerCase().includes(searchInput.toLowerCase())
       );
     });
+    filteredData = lodash.orderBy(
+      filteredData,
+      this.state.columnToSort,
+      this.state.sortDirection
+    );
+    const emptyRows =
+      this.state.rowsPerPage -
+      Math.min(
+        this.state.rowsPerPage,
+        filteredData.length - this.state.page * this.state.rowsPerPage
+      );
     return (
       <div className="App">
         <CSVLink
@@ -125,7 +164,7 @@ class Transaction extends React.Component {
         </Link>
 
         <CInput
-          id="name"
+          id="searchInput"
           type="search"
           onChange={this.handleChange}
           placeholder="Search"
@@ -133,11 +172,157 @@ class Transaction extends React.Component {
         />
         <br />
         <CCard>
-          <ReactTable columns={columns} data={filteredData}></ReactTable>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {headers.map((row) => (
+                  <TableCell align="center">
+                    <div onClick={() => this.handleSort(row.key)}>
+                      {row.label}
+                    </div>
+                  </TableCell>
+                ))}
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(this.state.rowsPerPage > 0
+                ? filteredData.slice(
+                    this.state.page * this.state.rowsPerPage,
+                    this.state.page * this.state.rowsPerPage +
+                      this.state.rowsPerPage
+                  )
+                : filteredData
+              ).map((row) => {
+                const currentlyEditing = this.state.editID === row.id;
+                console.log(currentlyEditing);
+                return (
+                  <TableRow key={row.id}>
+                    {currentlyEditing ? (
+                      <>
+                        <TableCell>
+                          <TextField
+                            id="userId"
+                            value={this.state.editRow.userId}
+                            onChange={this.handleEditChange}
+                            multiline
+                            fullWidth
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            id="id"
+                            value={this.state.editRow.id}
+                            onChange={this.handleEditChange}
+                            multiline
+                            fullWidth
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            id="title"
+                            value={this.state.editRow.title}
+                            onChange={this.handleEditChange}
+                            multiline
+                            fullWidth
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            id="body"
+                            value={this.state.editRow.body}
+                            onChange={this.handleEditChange}
+                            multiline
+                            fullWidth
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <CIcon
+                              onClick={() => this.handleSaveEdit()}
+                              className="m-3"
+                              size={"xl"}
+                              name="cil-save"
+                              style={{ display: "block" }}
+                            />
+                            <CIcon
+                              onClick={() => this.handleCancelEdit()}
+                              className="m-3"
+                              size={"xl"}
+                              name="cil-ban"
+                              style={{ display: "block" }}
+                            />
+                          </div>
+                        </TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell align="center">{row.userId}</TableCell>
+                        <TableCell align="center">{row.id}</TableCell>
+                        <TableCell align="center">{row.title}</TableCell>
+                        <TableCell align="center">{row.body}</TableCell>
+                        <TableCell align="center">
+                          <div>
+                            <CIcon
+                              onClick={() => this.handleEdit(row)}
+                              className="m-3"
+                              size={"xl"}
+                              name="cil-pencil"
+                              style={{ display: "block" }}
+                            />
+                            <CIcon
+                              onClick={() => this.handleDelete(row.id)}
+                              className="m-3"
+                              size={"xl"}
+                              name="cil-trash"
+                              style={{ display: "block" }}
+                            />
+                          </div>
+                        </TableCell>
+                      </>
+                    )}
+                  </TableRow>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  count={filteredData.length}
+                  rowsPerPage={this.state.rowsPerPage}
+                  page={this.state.page}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                  labelRowsPerPage="Rows"
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
         </CCard>
       </div>
     );
   }
 }
 
-export default Transaction;
+const mapStateToProps = (state) => {
+  return {
+    data: state.transactions.data,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    getTransactions,
+    editTransaction,
+    deleteTransaction,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);

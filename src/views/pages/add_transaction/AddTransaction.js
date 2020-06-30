@@ -12,49 +12,90 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
+import { connect } from "react-redux";
+import { addTransaction } from "../../../actions/transactions";
+
 class AddTransaction extends Component {
+  constructor() {
+    super();
+    this.state = {
+      userId: "",
+      id: "",
+      title: "",
+      body: "",
+    };
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  handleAddTransaction = (e) => {
+    e.preventDefault();
+
+    this.props.dispatch(this.props.addTransaction(this.state));
+    this.setState({
+      userId: "",
+      id: "",
+      title: "",
+      body: "",
+    });
+  };
   render() {
+    const { userId, id, title, body } = this.state;
     return (
       <>
         <CCard>
           <CCardHeader>
-            Company
+            Transaction
             <small> Form</small>
           </CCardHeader>
           <CCardBody>
             <CFormGroup>
-              <CLabel htmlFor="company">Company</CLabel>
-              <CInput id="company" placeholder="Enter your company name" />
+              <CLabel htmlFor="company">User Id</CLabel>
+              <CInput
+                id="userId"
+                placeholder="Enter your user id"
+                value={userId}
+                onChange={this.handleChange}
+              />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="vat">VAT</CLabel>
-              <CInput id="vat" placeholder="DE1234567890" />
+              <CLabel htmlFor="vat">ID</CLabel>
+              <CInput
+                id="id"
+                placeholder="ID"
+                value={id}
+                onChange={this.handleChange}
+              />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="street">Street</CLabel>
-              <CInput id="street" placeholder="Enter street name" />
-            </CFormGroup>
-            <CFormGroup row className="my-0">
-              <CCol xs="8">
-                <CFormGroup>
-                  <CLabel htmlFor="city">City</CLabel>
-                  <CInput id="city" placeholder="Enter your city" />
-                </CFormGroup>
-              </CCol>
-              <CCol xs="4">
-                <CFormGroup>
-                  <CLabel htmlFor="postal-code">Postal Code</CLabel>
-                  <CInput id="postal-code" placeholder="Postal Code" />
-                </CFormGroup>
-              </CCol>
+              <CLabel htmlFor="street">Title</CLabel>
+              <CInput
+                id="title"
+                placeholder="Enter title"
+                value={title}
+                onChange={this.handleChange}
+              />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="country">Country</CLabel>
-              <CInput id="country" placeholder="Country name" />
+              <CLabel htmlFor="street">Body</CLabel>
+              <CInput
+                id="body"
+                placeholder="Enter body"
+                value={body}
+                onChange={this.handleChange}
+              />
             </CFormGroup>
           </CCardBody>
           <CCardFooter>
-            <CButton type="submit" size="sm" color="primary">
+            <CButton
+              type="submit"
+              size="sm"
+              color="primary"
+              onClick={this.handleAddTransaction}
+            >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
             <CButton type="reset" size="sm" color="danger">
@@ -67,4 +108,11 @@ class AddTransaction extends Component {
   }
 }
 
-export default AddTransaction;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    addTransaction,
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddTransaction);
