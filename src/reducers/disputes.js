@@ -1,29 +1,29 @@
 import {
-  GET_TRANSACTIONS,
-  ADD_TRANSACTION,
-  EDIT_TRANSACTION,
-  DELETE_TRANSACTION,
+  GET_DISPUTES,
+  ADD_DISPUTE,
+  EDIT_DISPUTE,
+  DELETE_DISPUTE,
 } from "../actions/actionTypes";
 
 const initialState = {
   data: [],
 };
 
-export default function transactions(state = initialState, action) {
+export default function disputes(state = initialState, action) {
   console.log("Inside payload", action.payload);
   switch (action.type) {
-    case GET_TRANSACTIONS:
+    case GET_DISPUTES:
       return {
         ...state,
         data: action.payload,
       };
 
-    case ADD_TRANSACTION:
+    case ADD_DISPUTE:
       return {
         ...state,
         data: [...state.data, action.payload],
       };
-    case EDIT_TRANSACTION:
+    case EDIT_DISPUTE:
       return {
         ...state,
         data: state.data.map((item) => {
@@ -36,7 +36,7 @@ export default function transactions(state = initialState, action) {
           return item;
         }),
       };
-    case DELETE_TRANSACTION:
+    case DELETE_DISPUTE:
       return {
         ...state,
         data: state.data.filter((item) => item.id !== action.payload),

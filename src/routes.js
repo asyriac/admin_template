@@ -58,14 +58,36 @@ const Typography = React.lazy(() =>
 );
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 const Users = React.lazy(() => import("./views/users/Users"));
-const User = React.lazy(() => import("./views/users/User"));
 const Transaction = React.lazy(() =>
   import("./views/pages/transaction/Transaction")
 );
 const AddTransaction = React.lazy(() =>
   import("./views/pages/add_transaction/AddTransaction")
 );
-
+const User = React.lazy(() => import("./views/pages/user/User"));
+const AddUser = React.lazy(() => import("./views/pages/add_user/AddUser"));
+const Banner = React.lazy(() => import("./views/pages/banner/Banner"));
+const AddBanner = React.lazy(() =>
+  import("./views/pages/add_banner/AddBanner")
+);
+const BrandFriend = React.lazy(() =>
+  import("./views/pages/brand_friend/BrandFriend")
+);
+const AddBrandFriend = React.lazy(() =>
+  import("./views/pages/add_brand_friend/AddBrandFriend")
+);
+const Dispute = React.lazy(() => import("./views/pages/dispute/Dispute"));
+const AddDispute = React.lazy(() =>
+  import("./views/pages/add_dispute/AddDispute")
+);
+const Category = React.lazy(() => import("./views/pages/category/Category"));
+const AddCategory = React.lazy(() =>
+  import("./views/pages/add_category/AddCategory")
+);
+const Franchise = React.lazy(() => import("./views/pages/franchise/Franchise"));
+const AddFranchise = React.lazy(() =>
+  import("./views/pages/add_franchise/AddFranchise")
+);
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
@@ -122,8 +144,6 @@ const routes = [
   { path: "/notifications/modals", name: "Modals", component: Modals },
   { path: "/notifications/toaster", name: "Toaster", component: Toaster },
   { path: "/widgets", name: "Widgets", component: Widgets },
-  { path: "/users", exact: true, name: "Users", component: Users },
-  { path: "/users/:id", exact: true, name: "User Details", component: User },
   {
     path: "/transactions",
     exact: true,
@@ -131,10 +151,82 @@ const routes = [
     component: Transaction,
   },
   {
-    path: "/add-transaction",
+    path: "/transactions/add",
     exact: true,
-    name: "Transactions",
+    name: "New Transaction",
     component: AddTransaction,
+  },
+  {
+    path: "/users",
+    exact: true,
+    name: "Users",
+    component: User,
+  },
+  {
+    path: "/users/add",
+    exact: true,
+    name: "New User",
+    component: AddUser,
+  },
+  {
+    path: "/banners",
+    exact: true,
+    name: "Banners",
+    component: Banner,
+  },
+  {
+    path: "/banners/add",
+    exact: true,
+    name: "New Banner",
+    component: AddBanner,
+  },
+  {
+    path: "/brand-friend",
+    exact: true,
+    name: "Brand Friend",
+    component: BrandFriend,
+  },
+  {
+    path: "/brand-friend/add",
+    exact: true,
+    name: "New Brand Friend",
+    component: AddBrandFriend,
+  },
+  {
+    path: "/disputes",
+    exact: true,
+    name: "Dispute",
+    component: Dispute,
+  },
+  {
+    path: "/disputes/add",
+    exact: true,
+    name: "New Dispute",
+    component: AddDispute,
+  },
+  {
+    path: "/category",
+    exact: true,
+    name: "Category",
+    component: Category,
+  },
+  {
+    path: "/category/add",
+    exact: true,
+    name: "New Category",
+    component: AddCategory,
+  },
+  {
+    path: "/franchises",
+    exact: true,
+    name: "Franchise",
+    component: Franchise,
+  },
+  {
+    path: "/franchises/add",
+    exact: true,
+    name: "New Franchise",
+    component: AddFranchise,
   },
 ];
 

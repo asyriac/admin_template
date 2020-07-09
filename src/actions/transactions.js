@@ -5,10 +5,11 @@ import {
   EDIT_TRANSACTION,
   DELETE_TRANSACTION,
 } from "./actionTypes";
+import { APIUrls } from "../services/api";
 
 export function getTransactions() {
   return async function (dispatch) {
-    const { data } = await axios.get("http://localhost:4000/posts");
+    const { data } = await axios.get(APIUrls.fetchTransactions());
     dispatch({
       type: GET_TRANSACTIONS,
       payload: data,
@@ -19,7 +20,7 @@ export function getTransactions() {
 export function addTransaction(body) {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post("http://localhost:4000/posts/", body);
+      const { data } = await axios.post(APIUrls.createTransaction(), body);
 
       dispatch({
         type: ADD_TRANSACTION,
@@ -33,7 +34,7 @@ export function addTransaction(body) {
 
 export function editTransaction(id, body) {
   return async function (dispatch) {
-    await axios.patch(`http://localhost:4000/posts/${id}`, body);
+    await axios.patch(APIUrls.editTransaction(id), body);
     dispatch({
       type: EDIT_TRANSACTION,
       payload: body,
@@ -43,7 +44,7 @@ export function editTransaction(id, body) {
 
 export function deleteTransaction(id) {
   return async function (dispatch) {
-    await axios.delete(`http://localhost:4000/posts/${id}`);
+    await axios.delete(APIUrls.deleteTransaction(id));
     dispatch({
       type: DELETE_TRANSACTION,
       payload: id,

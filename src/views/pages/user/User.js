@@ -29,13 +29,9 @@ import Paper from "@material-ui/core/Paper";
 import lodash from "lodash";
 
 import { connect } from "react-redux";
-import {
-  getTransactions,
-  editTransaction,
-  deleteTransaction,
-} from "../../../actions/transactions";
+import { getUsers, editUser, deleteUser } from "../../../actions/users";
 
-class Transaction extends React.Component {
+class User extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -50,7 +46,7 @@ class Transaction extends React.Component {
   }
 
   async componentDidMount() {
-    this.props.dispatch(this.props.getTransactions());
+    this.props.dispatch(this.props.getUsers());
   }
 
   handleChange = (e) => {
@@ -77,7 +73,7 @@ class Transaction extends React.Component {
   };
 
   handleDelete = (id) => {
-    this.props.dispatch(this.props.deleteTransaction(id));
+    this.props.dispatch(this.props.deleteUser(id));
   };
   handleChangePage = (event, newPage) => {
     this.setState({
@@ -115,7 +111,7 @@ class Transaction extends React.Component {
 
   handleSaveEdit = () => {
     const { editRow } = this.state;
-    this.props.dispatch(this.props.editTransaction(this.state.editID, editRow));
+    this.props.dispatch(this.props.editUser(this.state.editID, editRow));
     this.setState({
       editID: null,
     });
@@ -123,52 +119,56 @@ class Transaction extends React.Component {
   render() {
     const headers = [
       { label: "Id", key: "id" },
-      { label: "Txn ID", key: "txn_id" },
-      { label: "Date", key: "date" },
-      { label: "Txn Type", key: "txn_type" },
+      { label: "User ID", key: "user_id" },
+      {
+        label: "Brand Friend Registered Date",
+        key: "brand_friend_registered_date",
+      },
       { label: "Brand Friend Name", key: "brand_friend_name" },
       {
-        label: "Brand Friend Contact Number",
+        label: "Brand Friend Contact number",
         key: "brand_friend_contact_number",
       },
-      { label: "Customer Contact Number", key: "customer_contact_number" },
-      { label: "Business Contact Number", key: "business_contact_number" },
+      { label: "Brand Friend Email ID", key: "brand_friend_email_id" },
+      {
+        label: "Brand Friend My Invite Number",
+        key: "brand_friend_my_invite_number",
+      },
+      {
+        label: "Brand Friend Referrer Contact#",
+        key: "brand_friend_referrer_contact",
+      },
+      {
+        label: "Brand Friend Billing Address",
+        key: "brand_friend_billing_address",
+      },
+      { label: "City", key: "city" },
+      { label: "Brand Friend PINCODE", key: "brand_friend_pincode" },
+      { label: "Enrolled Business (Yes/No)", key: "enrolled_business_yesno" },
+      { label: "Business Referrer Contact#", key: "business_referrer_contact" },
+      { label: "Business GST#", key: "business_gst" },
       { label: "Business Name", key: "business_name" },
-      { label: "Total Promotion %", key: "total_promotion_" },
-      { label: "Transaction Value", key: "transaction_value" },
-      {
-        label: "Business Commission % + Value",
-        key: "business_commission_value",
-      },
-      { label: "Business GST% + Value", key: "business_gst_value" },
-      { label: "Business Due Amount", key: "business_due_amount" },
-      { label: "Spending Balance Status", key: "spending_balance_status" },
-      { label: "Receipt ID", key: "receipt_id" },
-      { label: "FriendlyApp Invoice#", key: "friendlyapp_invoice" },
-      {
-        label: "Friendly Incentive % + Value",
-        key: "friendly_incentive_value",
-      },
-      { label: "Friendly GST% + Value", key: "friendly_gst_value" },
-      { label: "Earning Balance Status", key: "earning_balance_status" },
-      { label: "Payment ID", key: "payment_id" },
-      { label: "Brand Friend voucher#", key: "brand_friend_voucher" },
-      { label: "Withdrawal Mode (UPI/Debt)", key: "withdrawal_mode_upidebt" },
+      { label: "Country", key: "country" },
+      { label: "Business Billing Address", key: "business_billing_address" },
+      { label: "Area", key: "area" },
+      { label: "City", key: "city_2" },
+      { label: "Business PINCODE", key: "business_pincode" },
+      { label: "Category", key: "category" },
+      { label: "Keywords", key: "keywords" },
+      { label: "Website", key: "website" },
+      { label: "Venue Map", key: "venue_map" },
+      { label: "Estd On", key: "estd_on" },
     ];
     const { data } = this.props;
     const { searchInput } = this.state;
     let filteredData = data.filter((value) => {
       return (
         value.id.toString().toLowerCase().includes(searchInput.toLowerCase()) ||
-        value.txn_id
+        value.user_id
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.date
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.toLowerCase()) ||
-        value.txn_type
+        value.brand_friend_registered_date
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
@@ -180,11 +180,39 @@ class Transaction extends React.Component {
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.customer_contact_number
+        value.brand_friend_email_id
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.business_contact_number
+        value.brand_friend_my_invite_number
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.brand_friend_referrer_contact
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.brand_friend_billing_address
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.city
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.brand_friend_pincode
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.enrolled_business_yesno
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.business_referrer_contact
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase()) ||
+        value.business_gst
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
@@ -192,59 +220,43 @@ class Transaction extends React.Component {
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.total_promotion_
+        value.country
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.transaction_value
+        value.business_billing_address
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.business_commission_value
+        value.area
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.business_gst_value
+        value.city_2
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.business_due_amount
+        value.business_pincode
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.spending_balance_status
+        value.category
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.receipt_id
+        value.keywords
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.friendlyapp_invoice
+        value.website
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.friendly_incentive_value
+        value.venue_map
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase()) ||
-        value.friendly_gst_value
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.toLowerCase()) ||
-        value.earning_balance_status
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.toLowerCase()) ||
-        value.payment_id
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.toLowerCase()) ||
-        value.brand_friend_voucher
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.toLowerCase()) ||
-        value.withdrawal_mode_upidebt
+        value.estd_on
           .toString()
           .toLowerCase()
           .includes(searchInput.toLowerCase())
@@ -277,9 +289,9 @@ class Transaction extends React.Component {
           </CButton>
         </CSVLink>
 
-        <Link to="/transactions/add">
+        <Link to="/users/add">
           <CButton style={{ float: "right" }} color="danger">
-            Add Transaction
+            Add User
           </CButton>
         </Link>
 
@@ -328,30 +340,25 @@ class Transaction extends React.Component {
                           <CModalHeader closeButton>Edit Row</CModalHeader>
                           <CModalBody>
                             <CFormGroup>
-                              <CLabel htmlFor="txn_id">Txn ID</CLabel>
+                              <CLabel htmlFor="user_id">User ID</CLabel>
                               <CInput
-                                id="txn_id"
-                                type="number"
-                                placeholder="Enter txn id"
-                                value={this.state.editRow.txn_id}
+                                id="user_id"
+                                placeholder="Enter user id"
+                                value={this.state.editRow.user_id}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="date">Date</CLabel>
+                              <CLabel htmlFor="brand_friend_registered_date">
+                                Brand Friend Registered Date
+                              </CLabel>
                               <CInput
-                                id="date"
-                                placeholder="Enter date"
-                                value={this.state.editRow.date}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="txn_type">Txn Type</CLabel>
-                              <CInput
-                                id="txn_type"
-                                placeholder="Enter txn type"
-                                value={this.state.editRow.txn_type}
+                                id="brand_friend_registered_date"
+                                placeholder="Enter brand friend registered date"
+                                value={
+                                  this.state.editRow
+                                    .brand_friend_registered_date
+                                }
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
@@ -368,7 +375,7 @@ class Transaction extends React.Component {
                             </CFormGroup>
                             <CFormGroup>
                               <CLabel htmlFor="brand_friend_contact_number">
-                                Brand Friend Contact Number
+                                Brand Friend Contact number
                               </CLabel>
                               <CInput
                                 id="brand_friend_contact_number"
@@ -380,28 +387,112 @@ class Transaction extends React.Component {
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="customer_contact_number">
-                                Customer Contact Number
+                              <CLabel htmlFor="brand_friend_email_id">
+                                Brand Friend Email ID
                               </CLabel>
                               <CInput
-                                id="customer_contact_number"
-                                placeholder="Enter customer contact number"
+                                id="brand_friend_email_id"
+                                placeholder="Enter brand friend email id"
+                                value={this.state.editRow.brand_friend_email_id}
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="brand_friend_my_invite_number">
+                                Brand Friend My Invite Number
+                              </CLabel>
+                              <CInput
+                                id="brand_friend_my_invite_number"
+                                placeholder="Enter brand friend my invite number"
                                 value={
-                                  this.state.editRow.customer_contact_number
+                                  this.state.editRow
+                                    .brand_friend_my_invite_number
                                 }
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="business_contact_number">
-                                Business Contact Number
+                              <CLabel htmlFor="brand_friend_referrer_contact">
+                                Brand Friend Referrer Contact#
                               </CLabel>
                               <CInput
-                                id="business_contact_number"
-                                placeholder="Enter business contact number"
+                                id="brand_friend_referrer_contact"
+                                placeholder="Enter brand friend referrer contact#"
                                 value={
-                                  this.state.editRow.business_contact_number
+                                  this.state.editRow
+                                    .brand_friend_referrer_contact
                                 }
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="brand_friend_billing_address">
+                                Brand Friend Billing Address
+                              </CLabel>
+                              <CInput
+                                id="brand_friend_billing_address"
+                                placeholder="Enter brand friend billing address"
+                                value={
+                                  this.state.editRow
+                                    .brand_friend_billing_address
+                                }
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="city">City</CLabel>
+                              <CInput
+                                id="city"
+                                placeholder="Enter city"
+                                value={this.state.editRow.city}
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="brand_friend_pincode">
+                                Brand Friend PINCODE
+                              </CLabel>
+                              <CInput
+                                id="brand_friend_pincode"
+                                placeholder="Enter brand friend pincode"
+                                value={this.state.editRow.brand_friend_pincode}
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="enrolled_business_yesno">
+                                Enrolled Business (Yes/No)
+                              </CLabel>
+                              <CInput
+                                id="enrolled_business_yesno"
+                                placeholder="Enter enrolled business (yes/no)"
+                                value={
+                                  this.state.editRow.enrolled_business_yesno
+                                }
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="business_referrer_contact">
+                                Business Referrer Contact#
+                              </CLabel>
+                              <CInput
+                                id="business_referrer_contact"
+                                placeholder="Enter business referrer contact#"
+                                value={
+                                  this.state.editRow.business_referrer_contact
+                                }
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="business_gst">
+                                Business GST#
+                              </CLabel>
+                              <CInput
+                                id="business_gst"
+                                placeholder="Enter business gst#"
+                                value={this.state.editRow.business_gst}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
@@ -417,162 +508,98 @@ class Transaction extends React.Component {
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="total_promotion_">
-                                Total Promotion %
-                              </CLabel>
+                              <CLabel htmlFor="country">Country</CLabel>
                               <CInput
-                                id="total_promotion_"
-                                placeholder="Enter total promotion %"
-                                value={this.state.editRow.total_promotion_}
+                                id="country"
+                                placeholder="Enter country"
+                                value={this.state.editRow.country}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="transaction_value">
-                                Transaction Value
+                              <CLabel htmlFor="business_billing_address">
+                                Business Billing Address
                               </CLabel>
                               <CInput
-                                id="transaction_value"
-                                placeholder="Enter transaction value"
-                                value={this.state.editRow.transaction_value}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_commission_value">
-                                Business Commission % + Value
-                              </CLabel>
-                              <CInput
-                                id="business_commission_value"
-                                placeholder="Enter business commission % + value"
+                                id="business_billing_address"
+                                placeholder="Enter business billing address"
                                 value={
-                                  this.state.editRow.business_commission_value
+                                  this.state.editRow.business_billing_address
                                 }
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="business_gst_value">
-                                Business GST% + Value
+                              <CLabel htmlFor="area">Area</CLabel>
+                              <CInput
+                                id="area"
+                                placeholder="Enter area"
+                                value={this.state.editRow.area}
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="city">City</CLabel>
+                              <CInput
+                                id="city_2"
+                                placeholder="Enter city"
+                                value={this.state.editRow.city_2}
+                                onChange={this.handleEditChange}
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="business_pincode">
+                                Business PINCODE
                               </CLabel>
                               <CInput
-                                id="business_gst_value"
-                                placeholder="Enter business gst% + value"
-                                value={this.state.editRow.business_gst_value}
+                                id="business_pincode"
+                                placeholder="Enter business pincode"
+                                value={this.state.editRow.business_pincode}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="business_due_amount">
-                                Business Due Amount
-                              </CLabel>
+                              <CLabel htmlFor="category">Category</CLabel>
                               <CInput
-                                id="business_due_amount"
-                                placeholder="Enter business due amount"
-                                value={this.state.editRow.business_due_amount}
+                                id="category"
+                                placeholder="Enter category"
+                                value={this.state.editRow.category}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="spending_balance_status">
-                                Spending Balance Status
-                              </CLabel>
+                              <CLabel htmlFor="keywords">Keywords</CLabel>
                               <CInput
-                                id="spending_balance_status"
-                                placeholder="Enter spending balance status"
-                                value={
-                                  this.state.editRow.spending_balance_status
-                                }
+                                id="keywords"
+                                placeholder="Enter keywords"
+                                value={this.state.editRow.keywords}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="receipt_id">Receipt ID</CLabel>
+                              <CLabel htmlFor="website">Website</CLabel>
                               <CInput
-                                id="receipt_id"
-                                placeholder="Enter receipt id"
-                                value={this.state.editRow.receipt_id}
+                                id="website"
+                                placeholder="Enter website"
+                                value={this.state.editRow.website}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="friendlyapp_invoice">
-                                FriendlyApp Invoice#
-                              </CLabel>
+                              <CLabel htmlFor="venue_map">Venue Map</CLabel>
                               <CInput
-                                id="friendlyapp_invoice"
-                                placeholder="Enter friendlyapp invoice#"
-                                value={this.state.editRow.friendlyapp_invoice}
+                                id="venue_map"
+                                placeholder="Enter venue map"
+                                value={this.state.editRow.venue_map}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
                             <CFormGroup>
-                              <CLabel htmlFor="friendly_incentive_value">
-                                Friendly Incentive % + Value
-                              </CLabel>
+                              <CLabel htmlFor="estd_on">Estd On</CLabel>
                               <CInput
-                                id="friendly_incentive_value"
-                                placeholder="Enter friendly incentive % + value"
-                                value={
-                                  this.state.editRow.friendly_incentive_value
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="friendly_gst_value">
-                                Friendly GST% + Value
-                              </CLabel>
-                              <CInput
-                                id="friendly_gst_value"
-                                placeholder="Enter friendly gst% + value"
-                                value={this.state.editRow.friendly_gst_value}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="earning_balance_status">
-                                Earning Balance Status
-                              </CLabel>
-                              <CInput
-                                id="earning_balance_status"
-                                placeholder="Enter earning balance status"
-                                value={
-                                  this.state.editRow.earning_balance_status
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="payment_id">Payment ID</CLabel>
-                              <CInput
-                                id="payment_id"
-                                placeholder="Enter payment id"
-                                value={this.state.editRow.payment_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_voucher">
-                                Brand Friend voucher#
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_voucher"
-                                placeholder="Enter brand friend voucher#"
-                                value={this.state.editRow.brand_friend_voucher}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="withdrawal_mode_upidebt">
-                                Withdrawal Mode (UPI/Debt)
-                              </CLabel>
-                              <CInput
-                                id="withdrawal_mode_upidebt"
-                                placeholder="Enter withdrawal mode (upi/debt)"
-                                value={
-                                  this.state.editRow.withdrawal_mode_upidebt
-                                }
+                                id="estd_on"
+                                placeholder="Enter estd on"
+                                value={this.state.editRow.estd_on}
                                 onChange={this.handleEditChange}
                               />
                             </CFormGroup>
@@ -596,9 +623,10 @@ class Transaction extends React.Component {
                     )}
                     <TableRow key={row.id}>
                       <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.txn_id}</TableCell>
-                      <TableCell align="center">{row.date}</TableCell>
-                      <TableCell align="center">{row.txn_type}</TableCell>
+                      <TableCell align="center">{row.user_id}</TableCell>
+                      <TableCell align="center">
+                        {row.brand_friend_registered_date}
+                      </TableCell>
                       <TableCell align="center">
                         {row.brand_friend_name}
                       </TableCell>
@@ -606,50 +634,43 @@ class Transaction extends React.Component {
                         {row.brand_friend_contact_number}
                       </TableCell>
                       <TableCell align="center">
-                        {row.customer_contact_number}
+                        {row.brand_friend_email_id}
                       </TableCell>
                       <TableCell align="center">
-                        {row.business_contact_number}
+                        {row.brand_friend_my_invite_number}
                       </TableCell>
+                      <TableCell align="center">
+                        {row.brand_friend_referrer_contact}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.brand_friend_billing_address}
+                      </TableCell>
+                      <TableCell align="center">{row.city}</TableCell>
+                      <TableCell align="center">
+                        {row.brand_friend_pincode}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.enrolled_business_yesno}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.business_referrer_contact}
+                      </TableCell>
+                      <TableCell align="center">{row.business_gst}</TableCell>
                       <TableCell align="center">{row.business_name}</TableCell>
+                      <TableCell align="center">{row.country}</TableCell>
                       <TableCell align="center">
-                        {row.total_promotion_}
+                        {row.business_billing_address}
                       </TableCell>
+                      <TableCell align="center">{row.area}</TableCell>
+                      <TableCell align="center">{row.city_2}</TableCell>
                       <TableCell align="center">
-                        {row.transaction_value}
+                        {row.business_pincode}
                       </TableCell>
-                      <TableCell align="center">
-                        {row.business_commission_value}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.business_gst_value}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.business_due_amount}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.spending_balance_status}
-                      </TableCell>
-                      <TableCell align="center">{row.receipt_id}</TableCell>
-                      <TableCell align="center">
-                        {row.friendlyapp_invoice}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.friendly_incentive_value}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.friendly_gst_value}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.earning_balance_status}
-                      </TableCell>
-                      <TableCell align="center">{row.payment_id}</TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_voucher}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.withdrawal_mode_upidebt}
-                      </TableCell>
+                      <TableCell align="center">{row.category}</TableCell>
+                      <TableCell align="center">{row.keywords}</TableCell>
+                      <TableCell align="center">{row.website}</TableCell>
+                      <TableCell align="center">{row.venue_map}</TableCell>
+                      <TableCell align="center">{row.estd_on}</TableCell>
                       <TableCell align="center">
                         <div>
                           <CIcon
@@ -699,17 +720,17 @@ class Transaction extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.transactions.data,
+    data: state.users.data,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    getTransactions,
-    editTransaction,
-    deleteTransaction,
+    getUsers,
+    editUser,
+    deleteUser,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Transaction);
+export default connect(mapStateToProps, mapDispatchToProps)(User);
