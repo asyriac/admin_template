@@ -64,11 +64,19 @@ const Transaction = React.lazy(() =>
 const AddTransaction = React.lazy(() =>
   import("./views/pages/add_transaction/AddTransaction")
 );
+const EditTransaction = React.lazy(() =>
+  import("./views/pages/edit_transaction/EditTransaction")
+);
 const User = React.lazy(() => import("./views/pages/user/User"));
 const AddUser = React.lazy(() => import("./views/pages/add_user/AddUser"));
+const EditUser = React.lazy(() => import("./views/pages/edit_user/EditUser"));
 const Banner = React.lazy(() => import("./views/pages/banner/Banner"));
 const AddBanner = React.lazy(() =>
   import("./views/pages/add_banner/AddBanner")
+);
+
+const EditBanner = React.lazy(() =>
+  import("./views/pages/edit_banner/EditBanner")
 );
 const BrandFriend = React.lazy(() =>
   import("./views/pages/brand_friend/BrandFriend")
@@ -76,17 +84,29 @@ const BrandFriend = React.lazy(() =>
 const AddBrandFriend = React.lazy(() =>
   import("./views/pages/add_brand_friend/AddBrandFriend")
 );
+const EditBrandFriend = React.lazy(() =>
+  import("./views/pages/edit_brand_friend/EditBrandFriend")
+);
 const Dispute = React.lazy(() => import("./views/pages/dispute/Dispute"));
 const AddDispute = React.lazy(() =>
   import("./views/pages/add_dispute/AddDispute")
+);
+const EditDispute = React.lazy(() =>
+  import("./views/pages/edit_dispute/EditDispute")
 );
 const Category = React.lazy(() => import("./views/pages/category/Category"));
 const AddCategory = React.lazy(() =>
   import("./views/pages/add_category/AddCategory")
 );
+const EditCategory = React.lazy(() =>
+  import("./views/pages/edit_category/EditCategory")
+);
 const Franchise = React.lazy(() => import("./views/pages/franchise/Franchise"));
 const AddFranchise = React.lazy(() =>
   import("./views/pages/add_franchise/AddFranchise")
+);
+const EditFranchise = React.lazy(() =>
+  import("./views/pages/edit_franchise/EditFranchise")
 );
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -157,6 +177,12 @@ const routes = [
     component: AddTransaction,
   },
   {
+    path: "/transactions/edit/:id",
+    exact: true,
+    name: "Edit Transaction",
+    component: EditTransaction,
+  },
+  {
     path: "/users",
     exact: true,
     name: "Users",
@@ -167,6 +193,12 @@ const routes = [
     exact: true,
     name: "New User",
     component: AddUser,
+  },
+  {
+    path: "/users/edit/:id",
+    exact: true,
+    name: "Edit User",
+    component: EditUser,
   },
   {
     path: "/banners",
@@ -181,6 +213,12 @@ const routes = [
     component: AddBanner,
   },
   {
+    path: "/users/banners/:id",
+    exact: true,
+    name: "Edit Banner",
+    component: EditBanner,
+  },
+  {
     path: "/brand-friend",
     exact: true,
     name: "Brand Friend",
@@ -191,6 +229,12 @@ const routes = [
     exact: true,
     name: "New Brand Friend",
     component: AddBrandFriend,
+  },
+  {
+    path: "/brand-friend/edit/:id",
+    exact: true,
+    name: "Edit Brand Friend",
+    component: EditBrandFriend,
   },
   {
     path: "/disputes",
@@ -205,6 +249,12 @@ const routes = [
     component: AddDispute,
   },
   {
+    path: "/disputes/edit/:id",
+    exact: true,
+    name: "Edit Dispute",
+    component: EditDispute,
+  },
+  {
     path: "/category",
     exact: true,
     name: "Category",
@@ -217,6 +267,12 @@ const routes = [
     component: AddCategory,
   },
   {
+    path: "/category/edit/:id",
+    exact: true,
+    name: "Edit Category",
+    component: EditCategory,
+  },
+  {
     path: "/franchises",
     exact: true,
     name: "Franchise",
@@ -227,6 +283,12 @@ const routes = [
     exact: true,
     name: "New Franchise",
     component: AddFranchise,
+  },
+  {
+    path: "/franchises/edit/:id",
+    exact: true,
+    name: "Edit Franchise",
+    component: EditFranchise,
   },
 ];
 

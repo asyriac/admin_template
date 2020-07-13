@@ -68,12 +68,9 @@ class BrandFriend extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/brand-friend/edit/${id}`);
   };
 
   handleDelete = (id) => {
@@ -250,183 +247,50 @@ class BrandFriend extends React.Component {
                 const currentlyEditing = this.state.editID === row.id;
                 console.log(currentlyEditing);
                 return (
-                  <>
-                    {currentlyEditing && (
-                      <>
-                        <CModal
-                          show={this.state.editID}
-                          onClose={this.handleCancelEdit}
-                          size="xl"
-                        >
-                          <CModalHeader closeButton>Edit Row</CModalHeader>
-                          <CModalBody>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_name">
-                                Brand Friend Name
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_name"
-                                placeholder="Enter brand friend name"
-                                value={this.state.editRow.brand_friend_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_number">
-                                Brand Friend Number
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_number"
-                                placeholder="Enter brand friend number"
-                                value={this.state.editRow.brand_friend_number}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="total_invited_listed_businesses">
-                                Total Invited & Listed Businesses
-                              </CLabel>
-                              <CInput
-                                id="total_invited_listed_businesses"
-                                placeholder="Enter total invited & listed businesses"
-                                value={
-                                  this.state.editRow
-                                    .total_invited_listed_businesses
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_rating_avg_ratings_received_by_business">
-                                Brand Friend Rating (Avg ratings received by
-                                Business)
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_rating_avg_ratings_received_by_business"
-                                placeholder="Enter brand friend rating (avg ratings received by business)"
-                                value={
-                                  this.state.editRow
-                                    .brand_friend_rating_avg_ratings_received_by_business
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="total_wom_referrals_sent">
-                                Total WOM referrals sent
-                              </CLabel>
-                              <CInput
-                                id="total_wom_referrals_sent"
-                                placeholder="Enter total wom referrals sent"
-                                value={
-                                  this.state.editRow.total_wom_referrals_sent
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="referral_conversion_rating">
-                                Referral Conversion Rating%
-                              </CLabel>
-                              <CInput
-                                id="referral_conversion_rating"
-                                placeholder="Enter referral conversion rating%"
-                                value={
-                                  this.state.editRow.referral_conversion_rating
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="total_business_value_generated">
-                                Total Business Value Generated
-                              </CLabel>
-                              <CInput
-                                id="total_business_value_generated"
-                                placeholder="Enter total business value generated"
-                                value={
-                                  this.state.editRow
-                                    .total_business_value_generated
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="total_wom_earnings">
-                                Total WOM Earnings
-                              </CLabel>
-                              <CInput
-                                id="total_wom_earnings"
-                                placeholder="Enter total wom earnings"
-                                value={this.state.editRow.total_wom_earnings}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              color="primary"
-                              onClick={this.handleSaveEdit}
-                            >
-                              Save
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={this.handleEdit}
-                            >
-                              Cancel
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
-                      </>
-                    )}
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_name}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.total_invited_listed_businesses}
-                      </TableCell>
-                      <TableCell align="center">
-                        {
-                          row.brand_friend_rating_avg_ratings_received_by_business
-                        }
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.total_wom_referrals_sent}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.referral_conversion_rating}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.total_business_value_generated}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.total_wom_earnings}
-                      </TableCell>
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.total_invited_listed_businesses}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_rating_avg_ratings_received_by_business}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.total_wom_referrals_sent}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.referral_conversion_rating}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.total_business_value_generated}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.total_wom_earnings}
+                    </TableCell>
 
-                      <TableCell align="center">
-                        <div>
-                          <CIcon
-                            onClick={() => this.handleEdit(row)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-pencil"
-                          />
-                          <CIcon
-                            onClick={() => this.handleDelete(row.id)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-trash"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                    <TableCell align="center">
+                      <div>
+                        <CIcon
+                          onClick={() => this.handleEdit(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-pencil"
+                        />
+                        <CIcon
+                          onClick={() => this.handleDelete(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-trash"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
               {emptyRows > 0 && (

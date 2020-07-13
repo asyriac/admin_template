@@ -19,8 +19,9 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addTransaction } from "../../../actions/transactions";
-import { isNumber } from "lodash";
+import { editTransaction } from "../../../actions/transactions";
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
 
 class AddTransaction extends Component {
   constructor() {
@@ -52,106 +53,62 @@ class AddTransaction extends Component {
         withdrawal_mode_upidebt: "",
       },
       errors: {
-        brand_friend_voucher: null,
+        brand_friend_voucher: "",
       },
       toast: [],
     };
   }
 
-  // Validation checks for onSubmit
-  validateFormSubmission = (data, errors) => {
-    let valid = true;
-    Object.keys(errors).forEach((val) => {
-      console.log(errors[val]);
-      if (!data[val]) {
-        errors[val] = "Cannot be empty";
-        valid = false;
-      }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleTransaction(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-      if (errors[val] !== null) {
-        valid = false;
-      }
-    });
+  validateForm = (errors) => {
+    let valid = true;
+    Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
     return valid;
   };
-
-  // Validation checks for onChange
-  validateForm = (data, errors, id, value) => {
-    switch (id) {
+  handleChange = (e) => {
+    const { id, value, type } = e.target;
+    let errors = this.state.errors;
+    switch (e.target.id) {
       case "brand_friend_voucher":
-        errors.brand_friend_voucher = isNaN(value) ? "Enter a number" : null;
+        errors.brand_friend_voucher = value.length < 5 ? "Cool" : "";
         break;
       default:
         break;
     }
-  };
-
-  handleChange = (e) => {
-    let { id, value } = e.target;
-    let { data, errors } = this.state;
-
-    this.validateForm(data, errors, id, value);
     this.setState({
       errors,
       data: {
-        ...data,
+        ...this.state.data,
         [id]: isNaN(value) ? value : value.length === 0 ? "" : parseInt(value),
       },
     });
   };
 
-  handleAddTransaction = (e) => {
+  handleEditTransaction = (e) => {
     e.preventDefault();
-    let { data } = this.state;
-    let submissionErrors = { ...this.state.errors };
-    if (this.validateFormSubmission(data, submissionErrors)) {
-      console.log(this.state.data);
-      this.props.dispatch(this.props.addTransaction(this.state.data));
+    if (this.validateForm(this.state.errors)) {
+      this.props.dispatch(
+        this.props.editTransaction(this.props.match.params.id, this.state.data)
+      );
       this.setState({
-        data: {
-          id: "",
-          txn_id: "",
-          date: "",
-          txn_type: "",
-          brand_friend_name: "",
-          brand_friend_contact_number: "",
-          customer_contact_number: "",
-          business_contact_number: "",
-          business_name: "",
-          total_promotion_: "",
-          transaction_value: "",
-          business_commission_value: "",
-          business_gst_value: "",
-          business_due_amount: "",
-          spending_balance_status: "",
-          receipt_id: "",
-          friendlyapp_invoice: "",
-          friendly_incentive_value: "",
-          friendly_gst_value: "",
-          earning_balance_status: "",
-          payment_id: "",
-          brand_friend_voucher: "",
-          withdrawal_mode_upidebt: "",
-        },
-        errors: {
-          brand_friend_voucher: null,
-        },
         toast: [...this.state.toast, 1],
       });
-    } else {
-      console.log(submissionErrors);
-      if (submissionErrors)
-        this.setState({
-          ...this.state,
-          errors: {
-            ...this.state.errors,
-            ...submissionErrors,
-          },
-        });
-      console.log(this.state);
     }
   };
   render() {
+    console.log(this.props.match.params.id);
     const {
       txn_id,
       date,
@@ -457,11 +414,10 @@ class AddTransaction extends Component {
                     placeholder="Enter brand friend voucher#"
                     value={brand_friend_voucher}
                     onChange={this.handleChange}
-                    invalid={this.state.errors.brand_friend_voucher !== null}
-                    autoComplete="off"
+                    invalid={this.state.errors.brand_friend_voucher.length > 0}
                   />
                   <CInvalidFeedback>
-                    {this.state.errors.brand_friend_voucher}
+                    Houston, we have a problem...
                   </CInvalidFeedback>
                 </CFormGroup>
               </CCol>
@@ -482,11 +438,11 @@ class AddTransaction extends Component {
             <CToaster position="top-right">
               {this.state.toast.map((toast, key) => {
                 return (
-                  <CToast show={true} autohide={1500} fade={true} key={key}>
+                  <CToast show={true} autohide={1500} fade={true}>
                     <CToastHeader closeButton={toast.closeButton}>
                       Alert
                     </CToastHeader>
-                    <CToastBody>Added successfully! </CToastBody>
+                    <CToastBody>Edited successfully! </CToastBody>
                   </CToast>
                 );
               })}
@@ -497,12 +453,9 @@ class AddTransaction extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddTransaction}
+              onClick={this.handleEditTransaction}
             >
               <CIcon name="cil-scrubber" /> Submit
-            </CButton>{" "}
-            <CButton type="reset" size="sm" color="danger">
-              <CIcon name="cil-ban" /> Reset
             </CButton>
           </CCardFooter>
         </CCard>
@@ -514,7 +467,7 @@ class AddTransaction extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addTransaction,
+    editTransaction,
   };
 };
 

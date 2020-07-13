@@ -69,12 +69,9 @@ class Franchise extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/franchises/edit/${id}`);
   };
 
   handleDelete = (id) => {
@@ -243,132 +240,35 @@ class Franchise extends React.Component {
                 const currentlyEditing = this.state.editID === row.id;
                 console.log(currentlyEditing);
                 return (
-                  <>
-                    {currentlyEditing && (
-                      <>
-                        <CModal
-                          show={this.state.editID}
-                          onClose={this.handleCancelEdit}
-                          size="xl"
-                        >
-                          <CModalHeader closeButton>Edit Row</CModalHeader>
-                          <CModalBody>
-                            <CFormGroup>
-                              <CLabel htmlFor="user_id">User Id</CLabel>
-                              <CInput
-                                id="user_id"
-                                placeholder="Enter user id"
-                                value={this.state.editRow.user_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_id">Business Id</CLabel>
-                              <CInput
-                                id="business_id"
-                                placeholder="Enter business id"
-                                value={this.state.editRow.business_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="is_active">Is Active</CLabel>
-                              <CSwitch
-                                className="mx-2 pt-1"
-                                color="dark"
-                                value={this.state.editRow.is_active}
-                                onClick={this.handleIsActive}
-                                shape="pill"
-                                checked={this.state.editRow.is_active}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="created_by">Created By</CLabel>
-                              <CInput
-                                id="created_by"
-                                placeholder="Enter created by"
-                                value={this.state.editRow.created_by}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="updated_by">Updated By</CLabel>
-                              <CInput
-                                id="updated_by"
-                                placeholder="Enter updated by"
-                                value={this.state.editRow.updated_by}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="created_on">Created On</CLabel>
-                              <CInput
-                                id="created_on"
-                                placeholder="Enter created on"
-                                value={this.state.editRow.created_on}
-                                onChange={this.handleEditChange}
-                                type="date"
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="updated_on">Updated On</CLabel>
-                              <CInput
-                                type="date"
-                                id="updated_on"
-                                name="date-input"
-                                placeholder="Enter updated on"
-                                value={this.state.editRow.updated_on}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              color="primary"
-                              onClick={this.handleSaveEdit}
-                            >
-                              Save
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={this.handleEdit}
-                            >
-                              Cancel
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
-                      </>
-                    )}
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.user_id}</TableCell>
-                      <TableCell align="center">{row.business_id}</TableCell>
-                      <TableCell align="center">
-                        {row.is_active ? "True" : "False"}
-                      </TableCell>
-                      <TableCell align="center">{row.created_by}</TableCell>
-                      <TableCell align="center">{row.updated_by}</TableCell>
-                      <TableCell align="center">{row.created_on}</TableCell>
-                      <TableCell align="center">{row.updated_on}</TableCell>
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.user_id}</TableCell>
+                    <TableCell align="center">{row.business_id}</TableCell>
+                    <TableCell align="center">
+                      {row.is_active ? "True" : "False"}
+                    </TableCell>
+                    <TableCell align="center">{row.created_by}</TableCell>
+                    <TableCell align="center">{row.updated_by}</TableCell>
+                    <TableCell align="center">{row.created_on}</TableCell>
+                    <TableCell align="center">{row.updated_on}</TableCell>
 
-                      <TableCell align="center">
-                        <div>
-                          <CIcon
-                            onClick={() => this.handleEdit(row)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-pencil"
-                          />
-                          <CIcon
-                            onClick={() => this.handleDelete(row.id)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-trash"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                    <TableCell align="center">
+                      <div>
+                        <CIcon
+                          onClick={() => this.handleEdit(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-pencil"
+                        />
+                        <CIcon
+                          onClick={() => this.handleDelete(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-trash"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
               {emptyRows > 0 && (

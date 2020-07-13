@@ -14,76 +14,69 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addUser } from "../../../actions/users";
+import { editUser } from "../../../actions/users";
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
 
-class AddUser extends Component {
+class EditUser extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      user_id: "",
-      brand_friend_registered_date: "",
-      brand_friend_name: "",
-      brand_friend_contact_number: "",
-      brand_friend_email_id: "",
-      brand_friend_my_invite_number: "",
-      brand_friend_referrer_contact: "",
-      brand_friend_billing_address: "",
-      city: "",
-      brand_friend_pincode: "",
-      enrolled_business_yesno: "",
-      business_referrer_contact: "",
-      business_gst: "",
-      business_name: "",
-      country: "",
-      business_billing_address: "",
-      area: "",
-      city_2: "",
-      business_pincode: "",
-      category: "",
-      keywords: "",
-      website: "",
-      venue_map: "",
-      estd_on: "",
+      data: {
+        id: "",
+        user_id: "",
+        brand_friend_registered_date: "",
+        brand_friend_name: "",
+        brand_friend_contact_number: "",
+        brand_friend_email_id: "",
+        brand_friend_my_invite_number: "",
+        brand_friend_referrer_contact: "",
+        brand_friend_billing_address: "",
+        city: "",
+        brand_friend_pincode: "",
+        enrolled_business_yesno: "",
+        business_referrer_contact: "",
+        business_gst: "",
+        business_name: "",
+        country: "",
+        business_billing_address: "",
+        area: "",
+        city_2: "",
+        business_pincode: "",
+        category: "",
+        keywords: "",
+        website: "",
+        venue_map: "",
+        estd_on: "",
+      },
     };
+  }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleUser(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddUser = (e) => {
+  handleEditUser = (e) => {
     e.preventDefault();
 
-    this.props.dispatch(this.props.addUser(this.state));
-    this.setState({
-      id: "",
-      user_id: "",
-      brand_friend_registered_date: "",
-      brand_friend_name: "",
-      brand_friend_contact_number: "",
-      brand_friend_email_id: "",
-      brand_friend_my_invite_number: "",
-      brand_friend_referrer_contact: "",
-      brand_friend_billing_address: "",
-      city: "",
-      brand_friend_pincode: "",
-      enrolled_business_yesno: "",
-      business_referrer_contact: "",
-      business_gst: "",
-      business_name: "",
-      country: "",
-      business_billing_address: "",
-      area: "",
-      city_2: "",
-      business_pincode: "",
-      category: "",
-      keywords: "",
-      website: "",
-      venue_map: "",
-      estd_on: "",
-    });
+    this.props.dispatch(
+      this.props.editUser(this.props.match.params.id, this.state.data)
+    );
   };
   render() {
     const {
@@ -111,7 +104,7 @@ class AddUser extends Component {
       website,
       venue_map,
       estd_on,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
@@ -434,7 +427,7 @@ class AddUser extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddUser}
+              onClick={this.handleEditUser}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -451,8 +444,8 @@ class AddUser extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addUser,
+    editUser,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddUser);
+export default connect(null, mapDispatchToProps)(EditUser);

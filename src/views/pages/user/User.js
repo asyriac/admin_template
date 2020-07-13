@@ -64,12 +64,9 @@ class User extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/users/edit/${id}`);
   };
 
   handleDelete = (id) => {
@@ -329,366 +326,71 @@ class User extends React.Component {
                 const currentlyEditing = this.state.editID === row.id;
                 console.log(currentlyEditing);
                 return (
-                  <>
-                    {currentlyEditing && (
-                      <>
-                        <CModal
-                          show={this.state.editID}
-                          onClose={this.handleCancelEdit}
-                          size="xl"
-                        >
-                          <CModalHeader closeButton>Edit Row</CModalHeader>
-                          <CModalBody>
-                            <CFormGroup>
-                              <CLabel htmlFor="user_id">User ID</CLabel>
-                              <CInput
-                                id="user_id"
-                                placeholder="Enter user id"
-                                value={this.state.editRow.user_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_registered_date">
-                                Brand Friend Registered Date
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_registered_date"
-                                placeholder="Enter brand friend registered date"
-                                value={
-                                  this.state.editRow
-                                    .brand_friend_registered_date
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_name">
-                                Brand Friend Name
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_name"
-                                placeholder="Enter brand friend name"
-                                value={this.state.editRow.brand_friend_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_contact_number">
-                                Brand Friend Contact number
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_contact_number"
-                                placeholder="Enter brand friend contact number"
-                                value={
-                                  this.state.editRow.brand_friend_contact_number
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_email_id">
-                                Brand Friend Email ID
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_email_id"
-                                placeholder="Enter brand friend email id"
-                                value={this.state.editRow.brand_friend_email_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_my_invite_number">
-                                Brand Friend My Invite Number
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_my_invite_number"
-                                placeholder="Enter brand friend my invite number"
-                                value={
-                                  this.state.editRow
-                                    .brand_friend_my_invite_number
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_referrer_contact">
-                                Brand Friend Referrer Contact#
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_referrer_contact"
-                                placeholder="Enter brand friend referrer contact#"
-                                value={
-                                  this.state.editRow
-                                    .brand_friend_referrer_contact
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_billing_address">
-                                Brand Friend Billing Address
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_billing_address"
-                                placeholder="Enter brand friend billing address"
-                                value={
-                                  this.state.editRow
-                                    .brand_friend_billing_address
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="city">City</CLabel>
-                              <CInput
-                                id="city"
-                                placeholder="Enter city"
-                                value={this.state.editRow.city}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_pincode">
-                                Brand Friend PINCODE
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_pincode"
-                                placeholder="Enter brand friend pincode"
-                                value={this.state.editRow.brand_friend_pincode}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="enrolled_business_yesno">
-                                Enrolled Business (Yes/No)
-                              </CLabel>
-                              <CInput
-                                id="enrolled_business_yesno"
-                                placeholder="Enter enrolled business (yes/no)"
-                                value={
-                                  this.state.editRow.enrolled_business_yesno
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_referrer_contact">
-                                Business Referrer Contact#
-                              </CLabel>
-                              <CInput
-                                id="business_referrer_contact"
-                                placeholder="Enter business referrer contact#"
-                                value={
-                                  this.state.editRow.business_referrer_contact
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_gst">
-                                Business GST#
-                              </CLabel>
-                              <CInput
-                                id="business_gst"
-                                placeholder="Enter business gst#"
-                                value={this.state.editRow.business_gst}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_name">
-                                Business Name
-                              </CLabel>
-                              <CInput
-                                id="business_name"
-                                placeholder="Enter business name"
-                                value={this.state.editRow.business_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="country">Country</CLabel>
-                              <CInput
-                                id="country"
-                                placeholder="Enter country"
-                                value={this.state.editRow.country}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_billing_address">
-                                Business Billing Address
-                              </CLabel>
-                              <CInput
-                                id="business_billing_address"
-                                placeholder="Enter business billing address"
-                                value={
-                                  this.state.editRow.business_billing_address
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="area">Area</CLabel>
-                              <CInput
-                                id="area"
-                                placeholder="Enter area"
-                                value={this.state.editRow.area}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="city">City</CLabel>
-                              <CInput
-                                id="city_2"
-                                placeholder="Enter city"
-                                value={this.state.editRow.city_2}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_pincode">
-                                Business PINCODE
-                              </CLabel>
-                              <CInput
-                                id="business_pincode"
-                                placeholder="Enter business pincode"
-                                value={this.state.editRow.business_pincode}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="category">Category</CLabel>
-                              <CInput
-                                id="category"
-                                placeholder="Enter category"
-                                value={this.state.editRow.category}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="keywords">Keywords</CLabel>
-                              <CInput
-                                id="keywords"
-                                placeholder="Enter keywords"
-                                value={this.state.editRow.keywords}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="website">Website</CLabel>
-                              <CInput
-                                id="website"
-                                placeholder="Enter website"
-                                value={this.state.editRow.website}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="venue_map">Venue Map</CLabel>
-                              <CInput
-                                id="venue_map"
-                                placeholder="Enter venue map"
-                                value={this.state.editRow.venue_map}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="estd_on">Estd On</CLabel>
-                              <CInput
-                                id="estd_on"
-                                placeholder="Enter estd on"
-                                value={this.state.editRow.estd_on}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              color="primary"
-                              onClick={this.handleSaveEdit}
-                            >
-                              Save
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={this.handleEdit}
-                            >
-                              Cancel
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
-                      </>
-                    )}
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.user_id}</TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_registered_date}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_name}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_contact_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_email_id}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_my_invite_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_referrer_contact}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_billing_address}
-                      </TableCell>
-                      <TableCell align="center">{row.city}</TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_pincode}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.enrolled_business_yesno}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.business_referrer_contact}
-                      </TableCell>
-                      <TableCell align="center">{row.business_gst}</TableCell>
-                      <TableCell align="center">{row.business_name}</TableCell>
-                      <TableCell align="center">{row.country}</TableCell>
-                      <TableCell align="center">
-                        {row.business_billing_address}
-                      </TableCell>
-                      <TableCell align="center">{row.area}</TableCell>
-                      <TableCell align="center">{row.city_2}</TableCell>
-                      <TableCell align="center">
-                        {row.business_pincode}
-                      </TableCell>
-                      <TableCell align="center">{row.category}</TableCell>
-                      <TableCell align="center">{row.keywords}</TableCell>
-                      <TableCell align="center">{row.website}</TableCell>
-                      <TableCell align="center">{row.venue_map}</TableCell>
-                      <TableCell align="center">{row.estd_on}</TableCell>
-                      <TableCell align="center">
-                        <div>
-                          <CIcon
-                            onClick={() => this.handleEdit(row)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-pencil"
-                          />
-                          <CIcon
-                            onClick={() => this.handleDelete(row.id)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-trash"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.user_id}</TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_registered_date}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_contact_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_email_id}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_my_invite_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_referrer_contact}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_billing_address}
+                    </TableCell>
+                    <TableCell align="center">{row.city}</TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_pincode}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.enrolled_business_yesno}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.business_referrer_contact}
+                    </TableCell>
+                    <TableCell align="center">{row.business_gst}</TableCell>
+                    <TableCell align="center">{row.business_name}</TableCell>
+                    <TableCell align="center">{row.country}</TableCell>
+                    <TableCell align="center">
+                      {row.business_billing_address}
+                    </TableCell>
+                    <TableCell align="center">{row.area}</TableCell>
+                    <TableCell align="center">{row.city_2}</TableCell>
+                    <TableCell align="center">{row.business_pincode}</TableCell>
+                    <TableCell align="center">{row.category}</TableCell>
+                    <TableCell align="center">{row.keywords}</TableCell>
+                    <TableCell align="center">{row.website}</TableCell>
+                    <TableCell align="center">{row.venue_map}</TableCell>
+                    <TableCell align="center">{row.estd_on}</TableCell>
+                    <TableCell align="center">
+                      <div>
+                        <CIcon
+                          onClick={() => this.handleEdit(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-pencil"
+                        />
+                        <CIcon
+                          onClick={() => this.handleDelete(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-trash"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
               {emptyRows > 0 && (

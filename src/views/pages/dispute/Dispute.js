@@ -68,12 +68,9 @@ class Dispute extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/disputes/edit/${id}`);
   };
 
   handleDelete = (id) => {
@@ -261,207 +258,46 @@ class Dispute extends React.Component {
                 const currentlyEditing = this.state.editID === row.id;
                 console.log(currentlyEditing);
                 return (
-                  <>
-                    {currentlyEditing && (
-                      <>
-                        <CModal
-                          show={this.state.editID}
-                          onClose={this.handleCancelEdit}
-                          size="xl"
-                        >
-                          <CModalHeader closeButton>Edit Row</CModalHeader>
-                          <CModalBody>
-                            <CFormGroup>
-                              <CLabel htmlFor="txn_id">Txn ID</CLabel>
-                              <CInput
-                                id="txn_id"
-                                placeholder="Enter txn id"
-                                value={this.state.editRow.txn_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="date">Date</CLabel>
-                              <CInput
-                                id="date"
-                                placeholder="Enter date"
-                                value={this.state.editRow.date}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="txn_type">Txn Type</CLabel>
-                              <CInput
-                                id="txn_type"
-                                placeholder="Enter txn type"
-                                value={this.state.editRow.txn_type}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="dispute_id">Dispute ID</CLabel>
-                              <CInput
-                                id="dispute_id"
-                                placeholder="Enter dispute id"
-                                value={this.state.editRow.dispute_id}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_name">
-                                Business Name
-                              </CLabel>
-                              <CInput
-                                id="business_name"
-                                placeholder="Enter business name"
-                                value={this.state.editRow.business_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_contact_number">
-                                Business Contact number
-                              </CLabel>
-                              <CInput
-                                id="business_contact_number"
-                                placeholder="Enter business contact number"
-                                value={
-                                  this.state.editRow.business_contact_number
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_name">
-                                Brand Friend Name
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_name"
-                                placeholder="Enter brand friend name"
-                                value={this.state.editRow.brand_friend_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="brand_friend_contact_number">
-                                Brand Friend Contact number
-                              </CLabel>
-                              <CInput
-                                id="brand_friend_contact_number"
-                                placeholder="Enter brand friend contact number"
-                                value={
-                                  this.state.editRow.brand_friend_contact_number
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="dispute_type">
-                                Dispute Type
-                              </CLabel>
-                              <CInput
-                                id="dispute_type"
-                                placeholder="Enter dispute type"
-                                value={this.state.editRow.dispute_type}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="dispute_details">
-                                Dispute Details
-                              </CLabel>
-                              <CInput
-                                id="dispute_details"
-                                placeholder="Enter dispute details"
-                                value={this.state.editRow.dispute_details}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="admin_comments">
-                                Admin Comments
-                              </CLabel>
-                              <CInput
-                                id="admin_comments"
-                                placeholder="Enter admin comments"
-                                value={this.state.editRow.admin_comments}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="admin_validation_status">
-                                Admin Validation Status
-                              </CLabel>
-                              <CInput
-                                id="admin_validation_status"
-                                placeholder="Enter admin validation status"
-                                value={
-                                  this.state.editRow.admin_validation_status
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              color="primary"
-                              onClick={this.handleSaveEdit}
-                            >
-                              Save
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={this.handleEdit}
-                            >
-                              Cancel
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
-                      </>
-                    )}
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.txn_id}</TableCell>
-                      <TableCell align="center">{row.date}</TableCell>
-                      <TableCell align="center">{row.txn_type}</TableCell>
-                      <TableCell align="center">{row.dispute_id}</TableCell>
-                      <TableCell align="center">{row.business_name}</TableCell>
-                      <TableCell align="center">
-                        {row.business_contact_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_name}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.brand_friend_contact_number}
-                      </TableCell>
-                      <TableCell align="center">{row.dispute_type}</TableCell>
-                      <TableCell align="center">
-                        {row.dispute_details}
-                      </TableCell>
-                      <TableCell align="center">{row.admin_comments}</TableCell>
-                      <TableCell align="center">
-                        {row.admin_validation_status}
-                      </TableCell>
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.txn_id}</TableCell>
+                    <TableCell align="center">{row.date}</TableCell>
+                    <TableCell align="center">{row.txn_type}</TableCell>
+                    <TableCell align="center">{row.dispute_id}</TableCell>
+                    <TableCell align="center">{row.business_name}</TableCell>
+                    <TableCell align="center">
+                      {row.business_contact_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.brand_friend_contact_number}
+                    </TableCell>
+                    <TableCell align="center">{row.dispute_type}</TableCell>
+                    <TableCell align="center">{row.dispute_details}</TableCell>
+                    <TableCell align="center">{row.admin_comments}</TableCell>
+                    <TableCell align="center">
+                      {row.admin_validation_status}
+                    </TableCell>
 
-                      <TableCell align="center">
-                        <div>
-                          <CIcon
-                            onClick={() => this.handleEdit(row)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-pencil"
-                          />
-                          <CIcon
-                            onClick={() => this.handleDelete(row.id)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-trash"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                    <TableCell align="center">
+                      <div>
+                        <CIcon
+                          onClick={() => this.handleEdit(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-pencil"
+                        />
+                        <CIcon
+                          onClick={() => this.handleDelete(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-trash"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
               {emptyRows > 0 && (

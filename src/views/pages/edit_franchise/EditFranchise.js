@@ -15,46 +15,54 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addCategory } from "../../../actions/categories";
+import { editFranchise } from "../../../actions/franchises";
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
 
-class AddCategory extends Component {
+class EditFranchise extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      parent: "",
-      sub: "",
-      description: "",
-      is_active: true,
-      created_by: "",
-      updated_by: "",
-      created_on: "",
-      updated_on: "",
+      data: {
+        id: "",
+        user_id: "",
+        business_id: "",
+        is_active: false,
+        created_by: "",
+        updated_by: "",
+        created_on: "",
+        updated_on: "",
+      },
     };
+  }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleFranchise(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        ...this.state.data,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddCategory = (e) => {
+  handleEditFranchise = (e) => {
     e.preventDefault();
 
-    this.props.dispatch(this.props.addCategory(this.state));
-    this.setState({
-      id: "",
-      parent: "",
-      sub: "",
-      description: "",
-      is_active: true,
-      created_by: "",
-      updated_by: "",
-      created_on: "",
-      updated_on: "",
-    });
+    this.props.dispatch(
+      this.props.editFranchise(this.props.match.params.id, this.state.data)
+    );
   };
-
   handleIsActive = () => {
     const { is_active } = this.state;
     this.setState({
@@ -63,20 +71,19 @@ class AddCategory extends Component {
   };
   render() {
     const {
-      parent,
-      sub,
-      description,
+      user_id,
+      business_id,
       is_active,
       created_by,
       updated_by,
       created_on,
       updated_on,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
           <CCardHeader>
-            Category
+            Franchise
             <small> Form</small>
           </CCardHeader>
           <CCardBody>
@@ -88,38 +95,28 @@ class AddCategory extends Component {
                 value={is_active}
                 onClick={this.handleIsActive}
                 shape="pill"
+                checked={is_active}
               />
             </CFormGroup> */}
             <CRow>
               <CCol>
                 <CFormGroup>
-                  <CLabel htmlFor="parent">Parent</CLabel>
+                  <CLabel htmlFor="user_id">User Id</CLabel>
                   <CInput
-                    id="parent"
-                    placeholder="Enter parent"
-                    value={parent}
+                    id="user_id"
+                    placeholder="Enter user id"
+                    value={user_id}
                     onChange={this.handleChange}
                   />
                 </CFormGroup>
               </CCol>
               <CCol>
                 <CFormGroup>
-                  <CLabel htmlFor="sub">Sub</CLabel>
+                  <CLabel htmlFor="business_id">Business Id</CLabel>
                   <CInput
-                    id="sub"
-                    placeholder="Enter sub"
-                    value={sub}
-                    onChange={this.handleChange}
-                  />
-                </CFormGroup>
-              </CCol>
-              <CCol>
-                <CFormGroup>
-                  <CLabel htmlFor="description">Description</CLabel>
-                  <CInput
-                    id="description"
-                    placeholder="Enter description"
-                    value={description}
+                    id="business_id"
+                    placeholder="Enter business id"
+                    value={business_id}
                     onChange={this.handleChange}
                   />
                 </CFormGroup>
@@ -182,7 +179,7 @@ class AddCategory extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddCategory}
+              onClick={this.handleEditFranchise}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -199,8 +196,8 @@ class AddCategory extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addCategory,
+    editFranchise,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddCategory);
+export default connect(null, mapDispatchToProps)(EditFranchise);

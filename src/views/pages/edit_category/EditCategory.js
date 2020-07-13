@@ -11,47 +11,64 @@ import {
   CSwitch,
   CRow,
   CCol,
+  CToaster,
+  CToast,
+  CToastHeader,
+  CToastBody,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addCategory } from "../../../actions/categories";
+import { editCategory } from "../../../actions/categories";
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
 
-class AddCategory extends Component {
+class EditCategory extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      parent: "",
-      sub: "",
-      description: "",
-      is_active: true,
-      created_by: "",
-      updated_by: "",
-      created_on: "",
-      updated_on: "",
+      data: {
+        id: "",
+        parent: "",
+        sub: "",
+        description: "",
+        is_active: true,
+        created_by: "",
+        updated_by: "",
+        created_on: "",
+        updated_on: "",
+      },
+      toast: [],
     };
+  }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleCategory(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        ...this.state.data,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddCategory = (e) => {
+  handleEditCategory = (e) => {
     e.preventDefault();
-
-    this.props.dispatch(this.props.addCategory(this.state));
+    this.props.dispatch(
+      this.props.editCategory(this.props.match.params.id, this.state.data)
+    );
     this.setState({
-      id: "",
-      parent: "",
-      sub: "",
-      description: "",
-      is_active: true,
-      created_by: "",
-      updated_by: "",
-      created_on: "",
-      updated_on: "",
+      toast: [...this.state.toast, 1],
     });
   };
 
@@ -61,7 +78,9 @@ class AddCategory extends Component {
       is_active: !is_active,
     });
   };
+
   render() {
+    console.log(this.state);
     const {
       parent,
       sub,
@@ -71,7 +90,7 @@ class AddCategory extends Component {
       updated_by,
       created_on,
       updated_on,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
@@ -176,13 +195,25 @@ class AddCategory extends Component {
                 </CFormGroup>
               </CCol>
             </CRow> */}
+            <CToaster position="top-right">
+              {this.state.toast.map((toast, key) => {
+                return (
+                  <CToast show={true} autohide={5000} fade={true}>
+                    <CToastHeader closeButton={toast.closeButton}>
+                      Alert
+                    </CToastHeader>
+                    <CToastBody>Edited successfully! </CToastBody>
+                  </CToast>
+                );
+              })}
+            </CToaster>
           </CCardBody>
           <CCardFooter>
             <CButton
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddCategory}
+              onClick={this.handleEditCategory}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -199,8 +230,8 @@ class AddCategory extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addCategory,
+    editCategory,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddCategory);
+export default connect(null, mapDispatchToProps)(EditCategory);

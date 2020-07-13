@@ -71,12 +71,9 @@ class Category extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/category/edit/${id}`);
   };
 
   handleDelete = (id) => {
@@ -371,7 +368,7 @@ class Category extends React.Component {
                       <TableCell>
                         <div>
                           <CIcon
-                            onClick={() => this.handleEdit(row)}
+                            onClick={() => this.handleEdit(row.id)}
                             className=""
                             size={"s"}
                             name="cil-pencil"

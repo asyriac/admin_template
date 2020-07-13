@@ -64,12 +64,9 @@ class Banner extends React.Component {
     });
   };
 
-  handleEdit = (row) => {
-    console.log(row);
-    this.setState({
-      editID: row.id,
-      editRow: row,
-    });
+  handleEdit = (id) => {
+    console.log(id);
+    this.props.history.push(`/users/banners/${id}`);
   };
 
   handleDelete = (id) => {
@@ -217,115 +214,34 @@ class Banner extends React.Component {
                 const currentlyEditing = this.state.editID === row.id;
                 console.log(currentlyEditing);
                 return (
-                  <>
-                    {currentlyEditing && (
-                      <>
-                        <CModal
-                          show={this.state.editID}
-                          onClose={this.handleCancelEdit}
-                          size="xl"
-                        >
-                          <CModalHeader closeButton>Edit Row</CModalHeader>
-                          <CModalBody>
-                            <CFormGroup>
-                              <CLabel htmlFor="upload_date_time">
-                                Upload Date & Time
-                              </CLabel>
-                              <CInput
-                                id="upload_date_time"
-                                placeholder="Enter upload date & time"
-                                value={this.state.editRow.upload_date_time}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_name">
-                                Business Name
-                              </CLabel>
-                              <CInput
-                                id="business_name"
-                                placeholder="Enter business name"
-                                value={this.state.editRow.business_name}
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="business_contact_number">
-                                Business Contact number
-                              </CLabel>
-                              <CInput
-                                id="business_contact_number"
-                                placeholder="Enter business contact number"
-                                value={
-                                  this.state.editRow.business_contact_number
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                            <CFormGroup>
-                              <CLabel htmlFor="promotion_status_activeinactiverestrictedhide">
-                                Promotion Status
-                                (Active/InActive/Restricted/Hide)
-                              </CLabel>
-                              <CInput
-                                id="promotion_status_activeinactiverestrictedhide"
-                                placeholder="Enter promotion status (active/inactive/restricted/hide)"
-                                value={
-                                  this.state.editRow
-                                    .promotion_status_activeinactiverestrictedhide
-                                }
-                                onChange={this.handleEditChange}
-                              />
-                            </CFormGroup>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              color="primary"
-                              onClick={this.handleSaveEdit}
-                            >
-                              Save
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={this.handleEdit}
-                            >
-                              Cancel
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
-                      </>
-                    )}
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">
-                        {row.upload_date_time}
-                      </TableCell>
-                      <TableCell align="center">{row.business_name}</TableCell>
-                      <TableCell align="center">
-                        {row.business_contact_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.promotion_status_activeinactiverestrictedhide}
-                      </TableCell>
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.upload_date_time}</TableCell>
+                    <TableCell align="center">{row.business_name}</TableCell>
+                    <TableCell align="center">
+                      {row.business_contact_number}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.promotion_status_activeinactiverestrictedhide}
+                    </TableCell>
 
-                      <TableCell align="center">
-                        <div>
-                          <CIcon
-                            onClick={() => this.handleEdit(row)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-pencil"
-                          />
-                          <CIcon
-                            onClick={() => this.handleDelete(row.id)}
-                            className="m-3"
-                            size={"s"}
-                            name="cil-trash"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                    <TableCell align="center">
+                      <div>
+                        <CIcon
+                          onClick={() => this.handleEdit(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-pencil"
+                        />
+                        <CIcon
+                          onClick={() => this.handleDelete(row.id)}
+                          className="m-3"
+                          size={"s"}
+                          name="cil-trash"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
               {emptyRows > 0 && (

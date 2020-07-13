@@ -14,44 +14,55 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addBrandFriend } from "../../../actions/brandfriends";
+import { editBrandFriend } from "../../../actions/brandfriends";
 
-class AddBrandFriend extends Component {
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
+
+class EditBrandFriend extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      brand_friend_name: "",
-      brand_friend_number: "",
-      total_invited_listed_businesses: "",
-      brand_friend_rating_avg_ratings_received_by_business: "",
-      total_wom_referrals_sent: "",
-      referral_conversion_rating: "",
-      total_business_value_generated: "",
-      total_wom_earnings: "",
+      data: {
+        id: "",
+        brand_friend_name: "",
+        brand_friend_number: "",
+        total_invited_listed_businesses: "",
+        brand_friend_rating_avg_ratings_received_by_business: "",
+        total_wom_referrals_sent: "",
+        referral_conversion_rating: "",
+        total_business_value_generated: "",
+        total_wom_earnings: "",
+      },
     };
+  }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleBrandFriend(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        ...this.state.data,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddBrandFriend = (e) => {
+  handleEditBrandFriend = (e) => {
     e.preventDefault();
 
-    this.props.dispatch(this.props.addBrandFriend(this.state));
-    this.setState({
-      id: "",
-      brand_friend_name: "",
-      brand_friend_number: "",
-      total_invited_listed_businesses: "",
-      brand_friend_rating_avg_ratings_received_by_business: "",
-      total_wom_referrals_sent: "",
-      referral_conversion_rating: "",
-      total_business_value_generated: "",
-      total_wom_earnings: "",
-    });
+    this.props.dispatch(
+      this.props.editBrandFriend(this.props.match.params.id, this.state.data)
+    );
   };
   render() {
     const {
@@ -63,7 +74,7 @@ class AddBrandFriend extends Component {
       referral_conversion_rating,
       total_business_value_generated,
       total_wom_earnings,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
@@ -186,7 +197,7 @@ class AddBrandFriend extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddBrandFriend}
+              onClick={this.handleEditBrandFriend}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -203,8 +214,8 @@ class AddBrandFriend extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addBrandFriend,
+    editBrandFriend,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddBrandFriend);
+export default connect(null, mapDispatchToProps)(EditBrandFriend);

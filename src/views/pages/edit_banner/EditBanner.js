@@ -14,36 +14,51 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addBanner } from "../../../actions/banners";
+import { editBanner } from "../../../actions/banners";
 
-class AddBanner extends Component {
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
+
+class EditBanner extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      upload_date_time: "",
-      business_name: "",
-      business_contact_number: "",
-      promotion_status_activeinactiverestrictedhide: "",
+      data: {
+        id: "",
+        upload_date_time: "",
+        business_name: "",
+        business_contact_number: "",
+        promotion_status_activeinactiverestrictedhide: "",
+      },
     };
+  }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleBanner(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        ...this.state.data,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddBanner = (e) => {
+  handleEditBanner = (e) => {
     e.preventDefault();
 
-    this.props.dispatch(this.props.addBanner(this.state));
-    this.setState({
-      id: "",
-      upload_date_time: "",
-      business_name: "",
-      business_contact_number: "",
-      promotion_status_activeinactiverestrictedhide: "",
-    });
+    this.props.dispatch(
+      this.props.editBanner(this.props.match.params.id, this.state.data)
+    );
   };
   render() {
     const {
@@ -51,7 +66,7 @@ class AddBanner extends Component {
       business_name,
       business_contact_number,
       promotion_status_activeinactiverestrictedhide,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
@@ -118,7 +133,7 @@ class AddBanner extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddBanner}
+              onClick={this.handleEditBanner}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -135,8 +150,8 @@ class AddBanner extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addBanner,
+    editBanner,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddBanner);
+export default connect(null, mapDispatchToProps)(EditBanner);

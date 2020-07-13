@@ -9,6 +9,8 @@ import {
   CCardFooter,
   CButton,
   CSwitch,
+  CRow,
+  CCol,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
@@ -74,25 +76,7 @@ class AddFranchise extends Component {
             <small> Form</small>
           </CCardHeader>
           <CCardBody>
-            <CFormGroup>
-              <CLabel htmlFor="user_id">User Id</CLabel>
-              <CInput
-                id="user_id"
-                placeholder="Enter user id"
-                value={user_id}
-                onChange={this.handleChange}
-              />
-            </CFormGroup>
-            <CFormGroup>
-              <CLabel htmlFor="business_id">Business Id</CLabel>
-              <CInput
-                id="business_id"
-                placeholder="Enter business id"
-                value={business_id}
-                onChange={this.handleChange}
-              />
-            </CFormGroup>
-            <CFormGroup>
+            {/* <CFormGroup>
               <CLabel htmlFor="is_active">Is Active</CLabel>
               <CSwitch
                 className="mx-2 pt-1"
@@ -102,46 +86,82 @@ class AddFranchise extends Component {
                 shape="pill"
                 checked={is_active}
               />
-            </CFormGroup>
-            <CFormGroup>
-              <CLabel htmlFor="created_by">Created By</CLabel>
-              <CInput
-                id="created_by"
-                placeholder="Enter created by"
-                value={created_by}
-                onChange={this.handleChange}
-              />
-            </CFormGroup>
-            <CFormGroup>
-              <CLabel htmlFor="updated_by">Updated By</CLabel>
-              <CInput
-                id="updated_by"
-                placeholder="Enter updated by"
-                value={updated_by}
-                onChange={this.handleChange}
-              />
-            </CFormGroup>
-            <CFormGroup>
-              <CLabel htmlFor="created_on">Created On</CLabel>
-              <CInput
-                id="created_on"
-                placeholder="Enter created on"
-                value={created_on}
-                onChange={this.handleChange}
-                type="date"
-              />
-            </CFormGroup>
-            <CFormGroup>
-              <CLabel htmlFor="updated_on">Updated On</CLabel>
-              <CInput
-                type="date"
-                id="updated_on"
-                name="date-input"
-                placeholder="Enter updated on"
-                value={updated_on}
-                onChange={this.handleChange}
-              />
-            </CFormGroup>
+            </CFormGroup> */}
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="user_id">User Id</CLabel>
+                  <CInput
+                    id="user_id"
+                    placeholder="Enter user id"
+                    value={user_id}
+                    onChange={this.handleChange}
+                  />
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="business_id">Business Id</CLabel>
+                  <CInput
+                    id="business_id"
+                    placeholder="Enter business id"
+                    value={business_id}
+                    onChange={this.handleChange}
+                  />
+                </CFormGroup>
+              </CCol>
+            </CRow>
+            {/* <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="created_by">Created By</CLabel>
+                  <CInput
+                    id="created_by"
+                    placeholder="Enter created by"
+                    value={created_by}
+                    onChange={this.handleChange}
+                  />
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="updated_by">Updated By</CLabel>
+                  <CInput
+                    id="updated_by"
+                    placeholder="Enter updated by"
+                    value={updated_by}
+                    onChange={this.handleChange}
+                  />
+                </CFormGroup>
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="created_on">Created On</CLabel>
+                  <CInput
+                    id="created_on"
+                    placeholder="Enter created on"
+                    value={created_on}
+                    onChange={this.handleChange}
+                    type="date"
+                  />
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CLabel htmlFor="updated_on">Updated On</CLabel>
+                  <CInput
+                    type="date"
+                    id="updated_on"
+                    name="date-input"
+                    placeholder="Enter updated on"
+                    value={updated_on}
+                    onChange={this.handleChange}
+                  />
+                </CFormGroup>
+              </CCol>
+            </CRow> */}
           </CCardBody>
           <CCardFooter>
             <CButton

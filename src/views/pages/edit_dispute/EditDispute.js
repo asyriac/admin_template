@@ -14,52 +14,60 @@ import {
 import CIcon from "@coreui/icons-react";
 
 import { connect } from "react-redux";
-import { addDispute } from "../../../actions/disputes";
+import { editDispute } from "../../../actions/disputes";
+import axios from "axios";
+import { APIUrls } from "../../../services/api";
 
-class AddDispute extends Component {
+class EditDispute extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      txn_id: "",
-      date: "",
-      txn_type: "",
-      dispute_id: "",
-      business_name: "",
-      business_contact_number: "",
-      brand_friend_name: "",
-      brand_friend_contact_number: "",
-      dispute_type: "",
-      dispute_details: "",
-      admin_comments: "",
-      admin_validation_status: "",
+      data: {
+        id: "",
+        txn_id: "",
+        date: "",
+        txn_type: "",
+        dispute_id: "",
+        business_name: "",
+        business_contact_number: "",
+        brand_friend_name: "",
+        brand_friend_contact_number: "",
+        dispute_type: "",
+        dispute_details: "",
+        admin_comments: "",
+        admin_validation_status: "",
+      },
     };
   }
+
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        APIUrls.fetchSingleDispute(this.props.match.params.id)
+      );
+      this.setState({
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      data: {
+        ...this.state.data,
+        [e.target.id]: e.target.value,
+      },
     });
   };
 
-  handleAddDispute = (e) => {
+  handleEditDispute = (e) => {
     e.preventDefault();
 
-    this.props.dispatch(this.props.addDispute(this.state));
-    this.setState({
-      id: "",
-      txn_id: "",
-      date: "",
-      txn_type: "",
-      dispute_id: "",
-      business_name: "",
-      business_contact_number: "",
-      brand_friend_name: "",
-      brand_friend_contact_number: "",
-      dispute_type: "",
-      dispute_details: "",
-      admin_comments: "",
-      admin_validation_status: "",
-    });
+    this.props.dispatch(
+      this.props.editDispute(this.props.match.params.id, this.state.data)
+    );
   };
   render() {
     const {
@@ -75,7 +83,7 @@ class AddDispute extends Component {
       dispute_details,
       admin_comments,
       admin_validation_status,
-    } = this.state;
+    } = this.state.data;
     return (
       <>
         <CCard>
@@ -238,7 +246,7 @@ class AddDispute extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={this.handleAddDispute}
+              onClick={this.handleEditDispute}
             >
               <CIcon name="cil-scrubber" /> Submit
             </CButton>{" "}
@@ -255,8 +263,8 @@ class AddDispute extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    addDispute,
+    editDispute,
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddDispute);
+export default connect(null, mapDispatchToProps)(EditDispute);
